@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
+import { Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { BRAND, PLACEHOLDER_NOTICE } from "@/lib/config";
-import { DevBanner } from "@/components/layout/DevBanner";
-import { CustomCursor } from "@/components/effects/CustomCursor";
+import { BRAND } from "@/lib/config";
+import { DisclaimerBanner } from "@/components/layout/DisclaimerBanner";
 
-const bodoniModa = Bodoni_Moda({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  variable: "--font-bodoni-moda",
+  weight: ["400", "600", "700"],
+  variable: "--font-cormorant",
   display: "swap",
   fallback: ["Georgia", "serif"],
 });
 
-const hankenGrotesk = Hanken_Grotesk({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-hanken-grotesk",
+  variable: "--font-inter",
   display: "swap",
   fallback: ["system-ui", "sans-serif"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-ibm-plex-mono",
+  variable: "--font-jetbrains-mono",
   display: "swap",
   fallback: ["Courier New", "monospace"],
 });
@@ -33,24 +33,30 @@ export const metadata: Metadata = {
     template: `%s | ${BRAND.name}`,
   },
   description: BRAND.description,
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://lovelwk.com",
+    title: `${BRAND.name} — ${BRAND.tagline}`,
+    description: BRAND.description,
+    siteName: BRAND.name,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      data-metal="gold"
-      className={`${bodoniModa.variable} ${hankenGrotesk.variable} ${ibmPlexMono.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body style={{ ["--banner-offset" as string]: "24px" }}>
+      <body>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <DevBanner message={PLACEHOLDER_NOTICE} />
+        <DisclaimerBanner />
         <div id="main-content">
           {children}
         </div>
-        <CustomCursor />
       </body>
     </html>
   );

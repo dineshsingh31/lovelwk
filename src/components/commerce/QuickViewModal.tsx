@@ -85,7 +85,9 @@ export function QuickViewModal({
             className="absolute inset-0 pointer-events-none"
             style={{
               background: `radial-gradient(ellipse at 50% 45%, ${
-                isGold ? "rgba(201,162,75,0.08)" : "rgba(196,202,210,0.06)"
+                isGold
+                  ? "rgba(var(--accent-rgb,201,162,75),0.08)"
+                  : "rgba(var(--accent-rgb,196,202,210),0.06)"
               } 0%, transparent 65%)`,
             }}
           />

@@ -9,6 +9,8 @@ import { useDeviceTier } from "@/hooks/useDeviceTier";
 import type { Metal } from "@/data/coins";
 import { cn } from "@/lib/cn";
 
+type ViewPreset = "front" | "back" | "edge";
+
 interface CoinSceneProps {
   metal: Metal;
   className?: string;
@@ -16,6 +18,8 @@ interface CoinSceneProps {
   interactive?: boolean;
   /** Auto-rotate coin */
   autoRotate?: boolean;
+  /** Lock coin orientation to a preset view */
+  view?: ViewPreset;
   /** Size hint for the container */
   size?: "hero" | "card" | "thumb";
 }
@@ -36,6 +40,7 @@ export function CoinScene({
   interactive = true,
   autoRotate = true,
   size = "hero",
+  view,
 }: CoinSceneProps) {
   const { tier } = useDeviceTier();
   const [canvasReady, setCanvasReady] = useState(false);
@@ -77,8 +82,17 @@ export function CoinScene({
   const config = sizeConfig[size];
   const quality = tier === "A" ? "high" : "low";
 
+  // Snap-view camera tweak (mainly for edge readability)
+  const cameraPosition: [number, number, number] =
+    view === "edge" ? [4.6, config.cameraPos[1], 0] : config.cameraPos;
+  const cameraFov = view === "edge" ? config.fov + 4 : config.fov;
+
+  const cameraNear = 0.1;
+  const cameraFar = 100;
+
   // Don't render canvas on Tier C or if context was lost
   const shouldRenderCanvas = showCanvas && tier !== "C" && !contextLost;
+  const isViewLocked = view !== undefined;
 
   return (
     <div className={cn("relative w-full h-full", className)}>
@@ -93,10 +107,10 @@ export function CoinScene({
         >
           <Canvas
             camera={{
-              fov: config.fov,
-              position: config.cameraPos,
-              near: 0.1,
-              far: 100,
+              fov: cameraFov,
+              position: cameraPosition,
+              near: cameraNear,
+              far: cameraFar,
             }}
             gl={{
               antialias: tier === "A",
@@ -113,6 +127,7 @@ export function CoinScene({
               <StudioEnvironment metal={metal} quality={quality} />
               <CoinMesh
                 metal={metal}
+                view={view}
                 autoRotate={autoRotate}
                 rotateSpeed={0.3}
               />

@@ -10,9 +10,12 @@ const CoinScene = dynamic(
   { ssr: false }
 );
 
+type ViewPreset = "front" | "back" | "edge";
+
 interface ProductStageProps {
   metal: Metal;
   className?: string;
+  view?: ViewPreset;
 }
 
 /**
@@ -21,7 +24,7 @@ interface ProductStageProps {
  *
  * SVG poster renders immediately, 3D canvas loads on top.
  */
-export function ProductStage({ metal, className }: ProductStageProps) {
+export function ProductStage({ metal, className, view }: ProductStageProps) {
   const isGold = metal === "gold";
 
   return (
@@ -38,8 +41,8 @@ export function ProductStage({ metal, className }: ProductStageProps) {
         style={{
           background: `radial-gradient(ellipse at 50% 45%, ${
             isGold
-              ? "rgba(201,162,75,0.08)"
-              : "rgba(196,202,210,0.06)"
+              ? "rgba(var(--accent-rgb,201,162,75),0.08)"
+              : "rgba(var(--accent-rgb,196,202,210),0.06)"
           } 0%, transparent 65%)`,
         }}
       />
@@ -58,7 +61,8 @@ export function ProductStage({ metal, className }: ProductStageProps) {
         metal={metal}
         size="card"
         interactive
-        autoRotate
+        autoRotate={view ? false : true}
+        view={view}
       />
     </div>
   );

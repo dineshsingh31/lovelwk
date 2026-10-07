@@ -65,19 +65,19 @@ export default function SilverPage() {
       <SiteHeader />
 
       {/* Header */}
-      <section className="pt-32 pb-12 bg-bg border-b border-line">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-slate-50 via-slate-100/30 to-white border-b-2 border-slate-300/30">
         <div className="max-w-[var(--grid-max)] mx-auto px-[var(--grid-gutter)]">
           <Reveal>
             <p className="font-mono-label text-accent mb-3 text-[10px]">
               SILVER COLLECTION
             </p>
             <h1
-              className="font-[family-name:var(--font-display)] text-ivory mb-4"
+              className="font-[family-name:var(--font-display)] text-slate-950 mb-6 drop-shadow-sm"
               style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}
             >
-              Silver coins
+              Our Silver Coins
             </h1>
-            <p className="text-ivory-mute max-w-lg">
+            <p className="text-slate-700/70 max-w-lg text-lg leading-relaxed font-medium">
               Fine silver coins from 1 troy ounce to 100 grams. Precision struck,
               serial-numbered and assay certified.
             </p>
@@ -86,11 +86,11 @@ export default function SilverPage() {
       </section>
 
       {/* Content: filter rail + grid */}
-      <section className="py-section bg-bg">
+      <section className="py-section bg-gradient-to-b from-slate-50/50 via-white to-slate-50/30">
         <div className="max-w-[var(--grid-max)] mx-auto px-[var(--grid-gutter)] grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8">
           {/* Filter rail — left sidebar */}
           <aside className="hidden lg:block">
-            <div className="sticky top-24 space-y-8">
+            <div className="sticky top-24 space-y-8 bg-white/60 backdrop-blur-sm p-6 rounded-xl border border-slate-200/50 shadow-sm">
               {/* Weight */}
               <div>
                 <h3 className="font-mono-label text-ivory mb-3 text-[10px]">
@@ -192,7 +192,7 @@ export default function SilverPage() {
 
           {/* Grid — silver uses 3-4 columns, spec-forward */}
           <div>
-            <p className="font-mono-label text-ivory-mute text-[10px] mb-6">
+            <p className="font-mono-label text-slate-700/70 text-[10px] mb-8 tracking-wider font-bold">
               {coins.length} {coins.length === 1 ? "COIN" : "COINS"}
             </p>
 
@@ -206,7 +206,7 @@ export default function SilverPage() {
               </div>
             ) : (
               <div className="text-center py-24">
-                <p className="text-ivory-mute">No coins match your filters.</p>
+                <p className="text-slate-700/50">No coins match your filters.</p>
               </div>
             )}
           </div>

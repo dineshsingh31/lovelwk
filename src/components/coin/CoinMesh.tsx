@@ -6,13 +6,17 @@ import { useFrame } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import type { Metal } from "@/data/coins";
 
+type ViewPreset = "front" | "back" | "edge";
+
 interface CoinMeshProps {
   metal: Metal;
   /** Radius in scene units */
   radius?: number;
   /** Thickness in scene units */
   thickness?: number;
-  /** Enable slow auto-rotation */
+  /** Lock coin orientation to a preset view */
+  view?: ViewPreset;
+  /** Enable slow auto-rotation (disabled when view is locked) */
   autoRotate?: boolean;
   /** Rotation speed multiplier */
   rotateSpeed?: number;
@@ -29,6 +33,7 @@ export function CoinMesh({
   metal,
   radius = 1.4,
   thickness = 0.2,
+  view,
   autoRotate = true,
   rotateSpeed = 0.3,
 }: CoinMeshProps) {
@@ -114,14 +119,24 @@ export function CoinMesh({
     }
   }, [isGold, textures]);
 
+  const isViewLocked = view !== undefined;
+
+  const viewRotation = useMemo<[number, number, number]>(() => {
+    if (!view) return [Math.PI / 2, 0, 0];
+    if (view === "front") return [Math.PI / 2, 0, 0];
+    if (view === "back") return [Math.PI / 2, Math.PI, 0];
+    // Rotate to show the reeded edge more clearly
+    return [Math.PI / 2, Math.PI / 2, 0];
+  }, [view]);
+
   useFrame((_, delta) => {
-    if (autoRotate && groupRef.current) {
+    if (autoRotate && groupRef.current && !isViewLocked) {
       groupRef.current.rotation.y += delta * rotateSpeed;
     }
   });
 
   return (
-    <group ref={groupRef} rotation={[Math.PI / 2, 0, 0]}>
+    <group ref={groupRef} rotation={viewRotation}>
       {/* 
         Three.js CylinderGeometry expects materials in order:
         [Side, Top, Bottom]

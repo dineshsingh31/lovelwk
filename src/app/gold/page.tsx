@@ -54,19 +54,19 @@ export default function GoldPage() {
       <SiteHeader />
 
       {/* Header */}
-      <section className="pt-32 pb-12 bg-bg border-b border-line">
+      <section className="pt-32 pb-16 bg-gradient-to-b from-amber-50 via-amber-100/40 to-white border-b-2 border-gold-300/30">
         <div className="max-w-[var(--grid-max)] mx-auto px-[var(--grid-gutter)]">
           <Reveal>
             <p className="font-mono-label text-accent mb-3 text-[10px]">
               GOLD COLLECTION
             </p>
             <h1
-              className="font-[family-name:var(--font-display)] text-ivory mb-4"
+              className="font-[family-name:var(--font-display)] text-amber-950 mb-6 drop-shadow-sm"
               style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)" }}
             >
-              Gold coins
+              Our Gold Coins
             </h1>
-            <p className="text-ivory-mute max-w-lg">
+            <p className="text-amber-900/70 max-w-lg text-lg leading-relaxed font-medium">
               24-karat gold coins in weights from 5 grams to 1 troy ounce. Each coin is
               individually assayed, serial-numbered and delivered insured.
             </p>
@@ -75,7 +75,7 @@ export default function GoldPage() {
       </section>
 
       {/* Filter bar — horizontal chips */}
-      <section className="sticky top-16 z-30 bg-bg/95 backdrop-blur-sm border-b border-line">
+      <section className="sticky top-16 z-30 bg-white/90 backdrop-blur-sm border-b-2 border-gold-200/50 shadow-sm">
         <div className="max-w-[var(--grid-max)] mx-auto px-[var(--grid-gutter)] py-3 flex items-center gap-4 overflow-x-auto">
           {/* Weight chips */}
           <div className="flex items-center gap-2 shrink-0">
@@ -84,10 +84,10 @@ export default function GoldPage() {
                 key={f.value}
                 onClick={() => setWeightFilter(f.value)}
                 className={cn(
-                  "px-3 py-1.5 text-xs font-mono-label rounded-[var(--radius-pill)] border transition-colors cursor-pointer",
+                  "px-4 py-2 text-xs font-mono-label rounded-full border-2 transition-all cursor-pointer font-semibold",
                   weightFilter === f.value
-                    ? "bg-accent/15 border-accent text-accent"
-                    : "border-line text-ivory-mute hover:text-ivory hover:border-ivory-mute/30"
+                    ? "bg-gold-300/20 border-gold-500 text-gold-700 shadow-md"
+                    : "border-gold-200 text-amber-700 hover:text-amber-900 hover:border-gold-400 hover:bg-amber-50/50"
                 )}
               >
                 {f.label}
@@ -98,12 +98,12 @@ export default function GoldPage() {
           <div className="w-px h-6 bg-line shrink-0" />
 
           {/* Hide out of stock */}
-          <label className="flex items-center gap-2 text-ivory-mute text-xs cursor-pointer shrink-0">
+          <label className="flex items-center gap-2 text-amber-800 text-xs cursor-pointer shrink-0 font-medium">
             <input
               type="checkbox"
               checked={hideOutOfStock}
               onChange={(e) => setHideOutOfStock(e.target.checked)}
-              className="accent-[var(--accent)]"
+              className="accent-gold-500"
             />
             Hide out of stock
           </label>
@@ -114,7 +114,7 @@ export default function GoldPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="bg-surface border border-line text-ivory text-xs px-3 py-1.5 rounded-[var(--radius-sharp)] cursor-pointer focus:outline-none focus:border-accent"
+            className="bg-white border-2 border-gold-300 text-amber-900 text-xs px-4 py-2 rounded-lg cursor-pointer focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-300/30 font-medium"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -126,9 +126,9 @@ export default function GoldPage() {
       </section>
 
       {/* Grid — gold uses 2-column editorial layout */}
-      <section className="py-section bg-bg">
+      <section className="py-section bg-gradient-to-b from-amber-50/50 via-white to-amber-50/30">
         <div className="max-w-[var(--grid-max)] mx-auto px-[var(--grid-gutter)]">
-          <p className="font-mono-label text-ivory-mute text-[10px] mb-6">
+          <p className="font-mono-label text-amber-700/70 text-[10px] mb-8 tracking-wider font-bold">
             {coins.length} {coins.length === 1 ? "COIN" : "COINS"}
           </p>
 
@@ -142,7 +142,7 @@ export default function GoldPage() {
             </div>
           ) : (
             <div className="text-center py-24">
-              <p className="text-ivory-mute">No coins match your filters.</p>
+              <p className="text-amber-700/50">No coins match your filters.</p>
             </div>
           )}
         </div>

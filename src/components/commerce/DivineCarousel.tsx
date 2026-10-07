@@ -5,115 +5,133 @@ import { cn } from "@/lib/cn";
 import Image from "next/image";
 
 const DIVINE_COINS = [
-  { id: "ganesh", name: "Shree Ganesh", image: "/coins/divine-ganesh.png" },
-  { id: "lakshmi", name: "Maa Lakshmi", image: "/coins/divine-lakshmi.png" },
-  { id: "durga", name: "Maa Durga", image: "/coins/divine-durga.png" },
-  { id: "hanuman", name: "Shree Hanuman", image: "/coins/divine-hanuman.png" },
-  { id: "radhakrishna", name: "Radha Krishna", image: "/coins/divine-radhakrishna.png" },
-  { id: "om", name: "Om", image: "/coins/divine-om.png" },
+  { id: "ganesh", name: "Shree Ganesh", image: "/coins/divine-ganesh.png", tagline: "Remover of Obstacles" },
+  { id: "lakshmi", name: "Maa Lakshmi", image: "/coins/divine-lakshmi.png", tagline: "Goddess of Wealth" },
+  { id: "durga", name: "Maa Durga", image: "/coins/divine-durga.png", tagline: "Divine Strength" },
+  { id: "hanuman", name: "Shree Hanuman", image: "/coins/divine-hanuman.png", tagline: "Eternal Devotion" },
+  { id: "radhakrishna", name: "Radha Krishna", image: "/coins/divine-radhakrishna.png", tagline: "Divine Love" },
+  { id: "om", name: "Om", image: "/coins/divine-om.png", tagline: "Sacred Sound" },
 ];
 
-/**
- * Divine designs carousel showing the available deities.
- * Silver metallic panel background with consistent card sizes.
- */
 export function DivineCarousel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState("ganesh");
 
-  const scrollLeft = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -220, behavior: "smooth" });
-    }
-  };
+  const scrollByCard = (dir: -1 | 1) => {
+    if (!scrollRef.current) return;
+    const track = scrollRef.current;
+    const childEl = track.querySelector<HTMLElement>("button[data-divine-card='true']");
+    const child = childEl ?? (track.firstElementChild as HTMLElement | null);
+    if (!child) return;
 
-  const scrollRight = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 220, behavior: "smooth" });
-    }
+    const styles = window.getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || "0") || 0;
+    const amount = child.clientWidth + gap;
+    track.scrollBy({ left: dir * amount, behavior: "smooth" });
   };
 
   return (
-    <div className="w-full max-w-[var(--grid-max)] mx-auto px-[var(--grid-gutter)] relative">
+    <div className="w-full max-w-container mx-auto px-4 relative mt-16 pb-20">
       {/* Arrow Controls */}
-      <div className="absolute top-1/2 left-2 -translate-y-1/2 z-10 hidden md:block">
-        <button 
-          onClick={scrollLeft}
-          className="w-9 h-9 rounded-full bg-ink-1/90 border border-line flex items-center justify-center text-ivory hover:border-accent hover:text-accent transition-colors backdrop-blur-sm cursor-pointer"
-          aria-label="Previous coin"
+      <div className="absolute top-1/2 left-4 -translate-y-1/2 z-20 hidden lg:block">
+        <button
+          onClick={() => scrollByCard(-1)}
+          className="w-12 h-12 rounded-full bg-charcoal/90 border border-gold/40 flex items-center justify-center text-ivory hover:border-gold hover:bg-charcoal hover:scale-110 transition-all backdrop-blur-md cursor-pointer"
         >
           ←
         </button>
       </div>
 
-      <div className="absolute top-1/2 right-2 -translate-y-1/2 z-10 hidden md:block">
-        <button 
-          onClick={scrollRight}
-          className="w-9 h-9 rounded-full bg-ink-1/90 border border-line flex items-center justify-center text-ivory hover:border-accent hover:text-accent transition-colors backdrop-blur-sm cursor-pointer"
-          aria-label="Next coin"
+      <div className="absolute top-1/2 right-4 -translate-y-1/2 z-20 hidden lg:block">
+        <button
+          onClick={() => scrollByCard(1)}
+          className="w-12 h-12 rounded-full bg-charcoal/90 border border-gold/40 flex items-center justify-center text-ivory hover:border-gold hover:bg-charcoal hover:scale-110 transition-all backdrop-blur-md cursor-pointer"
         >
           →
         </button>
       </div>
 
       {/* Carousel Track */}
-      <div 
+      <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto pb-4 pt-2 snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        className="flex gap-5 overflow-x-auto pb-6 snap-x snap-mandatory scroll-pl-4"
+        style={{ scrollbarWidth: "none" }}
       >
         {DIVINE_COINS.map((coin) => (
           <button
             key={coin.id}
+            data-divine-card="true"
             onClick={() => setActiveId(coin.id)}
             className={cn(
-              "relative flex-shrink-0 w-[140px] md:w-[170px] flex flex-col items-center",
-              "p-4 rounded-lg snap-center transition-all duration-300 cursor-pointer",
+              "relative flex-shrink-0 aspect-[4/5] w-[200px] sm:w-[220px] lg:w-[240px] flex flex-col items-start justify-between",
+              "py-6 px-5 rounded-card snap-center transition-all duration-500 cursor-pointer text-left",
               "border",
-              activeId === coin.id 
-                ? "border-accent/50 bg-ink-1 shadow-[0_0_20px_rgba(201,162,75,0.12)] -translate-y-1" 
-                : "border-line/30 bg-ink-1/60 hover:border-line hover:bg-ink-1/80"
+              activeId === coin.id
+                ? "border-gold bg-gradient-to-b from-ink/90 to-charcoal/90 shadow-[0_8px_30px_rgba(201,165,75,0.15)] scale-105"
+                : "border-gold/20 bg-charcoal/50 hover:border-gold/40 hover:bg-charcoal/80"
             )}
           >
-            {/* Glow */}
+            {/* Active glow effect */}
             {activeId === coin.id && (
-              <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-accent/15 rounded-full blur-xl pointer-events-none" />
-            )}
-            
-            {/* Coin Image — fixed size */}
-            <div className="relative w-20 h-20 md:w-24 md:h-24 mb-3 flex-shrink-0">
-              <Image 
-                src={coin.image}
-                alt={coin.name}
-                fill
-                className="object-contain drop-shadow-lg"
-                sizes="(max-width: 768px) 80px, 96px"
+              <div
+                className="absolute inset-0 rounded-card pointer-events-none"
+                style={{
+                  background: "radial-gradient(ellipse at 50% 30%, rgba(201, 165, 75, 0.15) 0%, transparent 60%)",
+                }}
               />
+            )}
+
+            {/* Coin Image */}
+            <div className="relative w-full aspect-square mb-4 flex-shrink-0 flex items-center justify-center">
+              <div className={cn(
+                "relative w-full h-full transition-transform duration-500",
+                activeId === coin.id && "scale-105"
+              )}>
+                {/* Fallback gray circle instead of real image if not found */}
+                <div className="absolute inset-0 m-4 rounded-full bg-ivory/10 flex items-center justify-center text-ivory/30 text-xs text-center border border-ivory/20">
+                  {coin.name} Image
+                </div>
+              </div>
             </div>
-            
-            {/* Name — small fixed text, no overflow */}
-            <p className={cn(
-              "text-xs font-medium text-center leading-tight mb-1 transition-colors w-full truncate",
-              activeId === coin.id ? "text-ivory" : "text-ivory-mute"
-            )}>
-              {coin.name}
-            </p>
-            <span className="font-mono-label text-[8px] text-accent/70">
-              GOLD | SILVER
-            </span>
+
+            {/* Content area */}
+            <div className="w-full flex flex-col items-center">
+              <h3 className={cn(
+                "text-lg font-display font-medium text-center leading-tight mb-1 transition-colors w-full line-clamp-2 min-h-[2.8em]",
+                activeId === coin.id ? "text-ivory" : "text-ivory/70"
+              )}>
+                {coin.name}
+              </h3>
+              <p className={cn(
+                "font-mono text-[10px] uppercase tracking-label text-center mb-4 transition-colors",
+                activeId === coin.id ? "text-gold" : "text-ivory/50"
+              )}>
+                {coin.tagline}
+              </p>
+
+              <div className="flex flex-row gap-2 flex-wrap justify-center">
+                <span className="font-mono text-[10px] tracking-label text-gold bg-charcoal/80 px-3 py-1 rounded-full border border-gold/30 whitespace-nowrap">
+                  24K Gold
+                </span>
+                <span className="font-mono text-[10px] tracking-label text-silver bg-charcoal/80 px-3 py-1 rounded-full border border-silver/30 whitespace-nowrap">
+                  999 Silver
+                </span>
+              </div>
+            </div>
           </button>
         ))}
       </div>
-      
+
       {/* Mobile dots */}
-      <div className="flex justify-center mt-2 md:hidden">
-        <div className="flex gap-1.5">
+      <div className="flex justify-center mt-6 lg:hidden">
+        <div className="flex gap-2">
           {DIVINE_COINS.map((coin) => (
-            <div 
-              key={`dot-${coin.id}`} 
+            <button
+              key={`dot-${coin.id}`}
+              onClick={() => setActiveId(coin.id)}
               className={cn(
-                "h-1 rounded-full transition-all duration-300",
-                activeId === coin.id ? "w-4 bg-accent" : "w-1.5 bg-line"
+                "h-1.5 rounded-full transition-all duration-300",
+                activeId === coin.id ? "w-8 bg-gold" : "w-2 bg-ivory/20"
               )}
             />
           ))}

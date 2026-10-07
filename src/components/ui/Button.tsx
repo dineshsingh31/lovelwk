@@ -21,7 +21,7 @@ const sizeStyles: Record<ButtonSize, string> = {
 };
 
 /**
- * Primary button with foil hover sweep.
+ * Primary button with gold background.
  * Secondary = hairline outline.
  * Ghost = no border, subtle hover.
  */
@@ -61,12 +61,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           /* Variants */
           variant === "primary" && [
             metal
-              ? "bg-accent text-ink-0 hover:brightness-110"
+              ? "bg-gold-500 text-ink-0 hover:bg-gold-hover"
               : "bg-ivory text-ink-0 hover:bg-ivory/90",
           ],
           variant === "secondary" && [
-            "bg-transparent border border-accent text-accent",
-            "hover:bg-accent/8",
+            "bg-transparent border border-gold-500 text-gold-500",
+            "hover:bg-gold-500/8",
           ],
           variant === "ghost" && [
             "bg-transparent text-ivory-mute",

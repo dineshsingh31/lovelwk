@@ -130,7 +130,7 @@ export default function ProductPage() {
           <div className="lg:col-span-7">
             <div className="lg:sticky lg:top-24">
               {/* 3D Coin Stage */}
-              <ProductStage metal={coin.metal} className="max-h-[65vh]" />
+              <ProductStage metal={coin.metal} className="max-h-[65vh]" view={view} />
 
               {/* View controls */}
               <div className="mt-4 flex items-center justify-between">
@@ -145,7 +145,7 @@ export default function ProductPage() {
                   size="sm"
                 />
                 <p className="font-mono-label text-ivory-mute text-[9px]">
-                  3D · INTERACTIVE
+                  3D · SNAP VIEW
                 </p>
               </div>
 

@@ -49,8 +49,8 @@ export function HeroStage({ metal, className }: HeroStageProps) {
         style={{
           background: `radial-gradient(ellipse at 50% 45%, ${
             isGold
-              ? "rgba(201,162,75,0.12)"
-              : "rgba(196,202,210,0.08)"
+              ? "rgba(var(--accent-rgb,201,162,75),0.12)"
+              : "rgba(var(--accent-rgb,196,202,210),0.08)"
           } 0%, transparent 70%)`,
         }}
       />

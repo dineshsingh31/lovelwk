@@ -4,10 +4,10 @@
  */
 
 export const BRAND = {
-  name: "Velseron",
-  tagline: "Precious metal, struck to be held.",
+  name: "LoveLWK",
+  tagline: "Precious metals for love's most precious moments",
   description:
-    "Serial-numbered gold and silver coins, assayed and delivered insured.",
+    "Handcrafted gold and silver coins to celebrate your love story—perfect for engagements, anniversaries, and lasting commitments.",
 } as const;
 
 export const CURRENCY = {

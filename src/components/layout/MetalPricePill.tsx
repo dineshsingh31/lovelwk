@@ -1,31 +1,55 @@
 "use client";
 
-import { useMetalPrice } from "@/hooks/useMetalPrice";
-import { CURRENCY } from "@/lib/config";
+import { useState, useEffect } from "react";
+import { usePrices } from "@/hooks/usePrices";
 
 export function MetalPricePill() {
-  const prices = useMetalPrice();
+  const { prices, loading } = usePrices();
+  const [mounted, setMounted] = useState(false);
 
-  const formatCompact = (val: number) =>
-    new Intl.NumberFormat(CURRENCY.locale, {
-      style: "currency",
-      currency: CURRENCY.code,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(val);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || loading || !prices.gold || !prices.silver) {
+    return (
+      <div className="hidden md:flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/20 bg-ivory shadow-sm min-w-[200px]">
+        <span className="font-mono text-xs text-ink/50 animate-pulse">Loading live prices...</span>
+      </div>
+    );
+  }
+
+  // Parse time safely
+  const timeStr = new Date(prices.lastUpdated).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
-    <div
-      className="inline-flex items-center gap-3 px-3 py-1.5 rounded-[var(--radius-pill)] border border-line bg-surface/60"
-      aria-label="Metal prices per gram, indicative"
-    >
-      <span className="font-mono-label text-gold-500 text-[10px]">
-        Au {formatCompact(prices.goldPerGram)}/g
-      </span>
-      <span className="w-px h-3 bg-line" aria-hidden />
-      <span className="font-mono-label text-silver-500 text-[10px]">
-        Ag {formatCompact(prices.silverPerGram)}/g
-      </span>
+    <div className="hidden lg:flex items-center gap-3 px-4 py-1.5 rounded-full border border-gold/30 bg-ivory shadow-sm">
+      <div className="flex items-center gap-1.5">
+        <span className="font-mono text-[11px] tracking-label text-gold uppercase">AU</span>
+        <span className="font-mono text-xs text-ink font-medium">
+          ₹{prices.gold.pricePerGram.toLocaleString("en-IN")}
+        </span>
+        <span className={`text-[10px] ${prices.gold.delta > 0 ? "text-green-600" : "text-red-600"}`}>
+          {prices.gold.delta > 0 ? "▲" : "▼"}
+        </span>
+      </div>
+      <div className="w-px h-3 bg-gold/30" />
+      <div className="flex items-center gap-1.5">
+        <span className="font-mono text-[11px] tracking-label text-silver-dark uppercase">AG</span>
+        <span className="font-mono text-xs text-ink font-medium">
+          ₹{prices.silver.pricePerGram.toLocaleString("en-IN")}
+        </span>
+        <span className={`text-[10px] ${prices.silver.delta > 0 ? "text-green-600" : "text-red-600"}`}>
+          {prices.silver.delta > 0 ? "▲" : "▼"}
+        </span>
+      </div>
+      <div className="w-px h-3 bg-gold/30" />
+      <div className="text-[10px] text-ink/50 font-mono">
+        {timeStr}
+      </div>
     </div>
   );
 }

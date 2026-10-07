@@ -24,8 +24,8 @@ export function Footer() {
           {/* Brand */}
           <div>
             <span
-              className="font-[family-name:var(--font-display)] text-ivory block mb-3"
-              style={{ fontSize: "1.5rem" }}
+              className="font-display block mb-3"
+              style={{ fontSize: "1.5rem", color: "#C9A54B" }}
             >
               {BRAND.name}
             </span>

@@ -87,7 +87,9 @@ export function InspectorModal({ coin, isOpen, onClose }: InspectorModalProps) {
             className="absolute inset-0 pointer-events-none"
             style={{
               background: `radial-gradient(ellipse at 50% 45%, ${
-                isGold ? "rgba(201,162,75,0.08)" : "rgba(196,202,210,0.06)"
+                isGold
+                  ? "rgba(var(--accent-rgb,201,162,75),0.08)"
+                  : "rgba(var(--accent-rgb,196,202,210),0.06)"
               } 0%, transparent 60%)`,
             }}
           />
@@ -95,8 +97,9 @@ export function InspectorModal({ coin, isOpen, onClose }: InspectorModalProps) {
           <CoinScene
             metal={coin.metal}
             size="hero"
+            view={activeView}
             interactive
-            autoRotate={activeHotspot === null}
+            autoRotate={false}
           />
 
           {/* Hotspot overlays */}
@@ -155,7 +158,7 @@ export function InspectorModal({ coin, isOpen, onClose }: InspectorModalProps) {
 
           <div className="absolute bottom-4 right-4 z-10">
             <span className="font-mono-label text-ivory-mute/40 text-[9px]">
-              3D · INTERACTIVE
+              3D · SNAP VIEW
             </span>
           </div>
         </div>
